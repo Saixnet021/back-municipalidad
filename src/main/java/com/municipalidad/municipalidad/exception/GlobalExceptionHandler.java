@@ -13,10 +13,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         String message = "Error de base de datos: Posible duplicado de DNI o Email.";
+        String detail = ex.getMostSpecificCause().getMessage();
 
-        // Check for specific constraint names if known, or just generic message
-        if (ex.getMessage() != null
-                && (ex.getMessage().contains("UK_") || ex.getMessage().contains("Duplicate entry"))) {
+        if (detail != null && (detail.contains("UK_") || detail.contains("Duplicate entry"))) {
             message = "El DNI o Email ya se encuentra registrado.";
         }
 
@@ -25,7 +24,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
-        return new ResponseEntity<>(new ErrorResponse("Ocurrió un error inesperado: " + ex.getMessage()),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        String message = "Ocurrió un error inesperado: " + ex.getMessage();
+
+        // Fallback for wrapped exceptions
+        if (ex.getMessage() != null
+                && (ex.getMessage().contains("Duplicate entry") || ex.getMessage().contains("UK_"))) {
+            return new ResponseEntity<>(new ErrorResponse("El DNI o Email ya se encuentra registrado."),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new ErrorResponse(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
