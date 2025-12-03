@@ -70,7 +70,12 @@ public class TramiteController {
             tramite.setUsuario((String) request.get("usuario"));
             tramite.setNombreNegocio((String) request.get("nombreNegocio"));
             tramite.setGiro((String) request.get("giro"));
-            tramite.setArea(new BigDecimal(request.get("area").toString()));
+            
+            Object areaObj = request.get("area");
+            if (areaObj != null) {
+                tramite.setArea(new BigDecimal(areaObj.toString()));
+            }
+            
             tramite.setZonificacion((String) request.get("zonificacion"));
 
             TramiteLicencia tramiteGuardado = tramiteService.crearTramiteLicencia(tramite);
@@ -78,7 +83,8 @@ public class TramiteController {
                     "mensaje", "Trámite de Licencia de Funcionamiento creado exitosamente",
                     "tramite", tramiteGuardado));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(Map.of("error", "Error al procesar la solicitud: " + e.getMessage()));
         }
     }
 
