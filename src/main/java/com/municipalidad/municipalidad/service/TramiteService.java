@@ -63,6 +63,18 @@ public class TramiteService {
         return tramiteRepository.findByUsuario(usuario);
     }
 
+    public Tramite buscarPorExpediente(String expediente) {
+        return tramiteRepository.findByExpediente(expediente);
+    }
+
+    @Transactional
+    public void actualizarEstado(Long id, String nuevoEstado) {
+        Tramite tramite = tramiteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Trámite no encontrado"));
+        tramite.setEstado(nuevoEstado);
+        tramiteRepository.save(tramite);
+    }
+
     private String guardarArchivo(MultipartFile archivo) {
         try {
             // Crear directorio si no existe
@@ -83,6 +95,30 @@ public class TramiteService {
             return UPLOAD_DIR + nombreUnico;
         } catch (IOException e) {
             throw new RuntimeException("Error al guardar archivo: " + e.getMessage());
+        }
+    }
+
+    public void seedTramites() {
+        if (tramiteRepository.count() == 0) {
+            TramiteMesaPartes t1 = new TramiteMesaPartes();
+            t1.setUsuario("Juan Perez");
+            t1.setAsunto("Solicitud de Limpieza");
+            t1.setDescripcion("Solicito limpieza en la calle 5");
+            mesaPartesRepository.save(t1);
+
+            TramiteConstancia t2 = new TramiteConstancia();
+            t2.setUsuario("Maria Lopez");
+            t2.setDireccion("Av. Principal 123");
+            t2.setTiempoResidencia(12);
+            constanciaRepository.save(t2);
+
+            TramiteLicencia t3 = new TramiteLicencia();
+            t3.setUsuario("Carlos Ramos");
+            t3.setNombreNegocio("Bodega Carlos");
+            t3.setGiro("Venta de abarrotes");
+            t3.setArea(new java.math.BigDecimal("50.00"));
+            t3.setZonificacion("COMERCIAL");
+            licenciaRepository.save(t3);
         }
     }
 }

@@ -18,4 +18,8 @@ public class TramiteConstancia extends Tramite {
 
     @Column(name = "recibo_servicio_url")
     private String reciboServicioUrl;
+
+    public TramiteConstancia() {
+        this.setTipo("Constancia de Residencia");
+    }
 }

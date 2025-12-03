@@ -22,4 +22,8 @@ public class TramiteLicencia extends Tramite {
 
     @Column(nullable = false)
     private String zonificacion; // COMERCIAL, RESIDENCIAL, INDUSTRIAL
+
+    public TramiteLicencia() {
+        this.setTipo("Licencia de Funcionamiento");
+    }
 }

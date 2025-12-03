@@ -91,4 +91,13 @@ public class TramiteController {
     public ResponseEntity<List<Tramite>> obtenerTramitesPorUsuario(@PathVariable String usuario) {
         return ResponseEntity.ok(tramiteService.obtenerTramitesPorUsuario(usuario));
     }
+
+    @GetMapping("/expediente/{expediente}")
+    public ResponseEntity<?> buscarPorExpediente(@PathVariable String expediente) {
+        Tramite tramite = tramiteService.buscarPorExpediente(expediente);
+        if (tramite == null) {
+            return ResponseEntity.status(404).body(Map.of("error", "Trámite no encontrado"));
+        }
+        return ResponseEntity.ok(tramite);
+    }
 }

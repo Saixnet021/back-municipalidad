@@ -11,4 +11,6 @@ public interface TramiteRepository extends JpaRepository<Tramite, Long> {
     List<Tramite> findByUsuario(String usuario);
 
     List<Tramite> findByEstado(String estado);
+    
+    Tramite findByExpediente(String expediente);
 }

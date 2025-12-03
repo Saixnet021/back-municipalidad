@@ -18,11 +18,11 @@ public class PagoController {
     @Autowired
     private PagoService pagoService;
 
-    @GetMapping("/deudas/{dni}")
-    public ResponseEntity<List<Deuda>> consultarDeudas(@PathVariable String dni) {
-        List<Deuda> deudas = pagoService.obtenerDeudasPendientes(dni);
-        return ResponseEntity.ok(deudas);
-    }
+//    @GetMapping("/deudas/{dni}")
+//    public ResponseEntity<List<Deuda>> consultarDeudas(@PathVariable String dni) {
+//        List<Deuda> deudas = pagoService.obtenerDeudasPendientes(dni);
+//        return ResponseEntity.ok(deudas);
+//    }
 
     @PostMapping("/pagos/procesar")
     public ResponseEntity<?> procesarPago(@RequestBody Map<String, Object> pagoRequest) {

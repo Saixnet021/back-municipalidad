@@ -18,4 +18,8 @@ public class TramiteMesaPartes extends Tramite {
 
     @Column(name = "ruta_archivo")
     private String rutaArchivo;
+
+    public TramiteMesaPartes() {
+        this.setTipo("Mesa de Partes");
+    }
 }

@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(org.springframework.security.config.Customizer.withDefaults())
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("/api/v1/auth/**", "/api/v1/arbitrios/**", "/api/v1/tramites/**")
+                        req -> req.requestMatchers("/api/v1/auth/**", "/api/v1/arbitrios/**", "/api/v1/tramites/**", "/api/v1/admin/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())
